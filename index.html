@@ -10,7 +10,7 @@
   <!-- https://google.github.io/material-design-icons/#icon-font-for-the-web -->
   <!-- Using via Google Web Fonts -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
+  
   <!-- https://tailwindcss.com/docs/installation -->
   <!-- Using Tailwind via CDN -->
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
@@ -21,18 +21,30 @@
 </head>
 
 <body>
-  <div id="app" class="mt-6 flex flex-col items-center mx-auto bg-blue-100 ">
-    <h1 class="text-xl font-extrabold">Photo Gallery ( {{ totalGallery }} )</h1>
-    <ul>
-      <li v-for="(photo,index) in photos" class="flex justify-center m-10">
-        <button v-on:click="toggleDone(index)" >
-        <img class="h-36 w-60" :src="photo.url">
+  <div id="app" class="flex flex-col justify-center items-center">
+    <div class="flex justify-center">
+      <h1 class="text-xl font-extrabold">Photo Gallery ( {{ totalGallery }} )</h1>
+    </div>
+    <div class="w-3/6 p-4 flex justify-end" v-show="!canvasShow">
+      <button v-show="searchBtn" @click="searchClick"><i class="im im-magnifier"></i></button>
+      <input  v-show="inputBtn"  type="text" v-model="inputTask" placeholder="Enter a new task ..." @keyup.enter="searchImg" class="p-2 bg-white rounded flex-1 border-b-2 border-blue-300 mr-4 mt-4">
+      <button v-show="cancelBtn" @click="cancelClick" class="bg-blue-600 text-white rounded" ><p class="m-2">Cancel</p></button>
+    </div>
+    <div class="w-4/6 p-4 bg-gray-900 flex justify-around" v-show="canvasShow" >
+      <img :src="canvasUrl" class="w-11/12 ">
+      <button v-on:click="canvasShow=false" class="h-1/4 focus:outline-none items-start ">
+        <i class="im im-x-mark text-white"></i>
+      </button>
+    </div>
+    <ul class="w-3/6 p-4 flex flex-col items-center mx-auto  ">
+      <li v-for="(photo,index) in photos" v-show="photo.imgShow" class="flex justify-center m-10" >
+        <button v-on:click="canvasClick(index)"class="focus:outline-none">
+          <img class="h-46 w-80" :src="photo.url">
         </button>
-        <span class="font-bold  mt-5 ml-5 ">{{photo.title}}</span> 
-        <div class="mt-5 ml-5">
-          <i v-show="photo.done" class="im im-heart text-red-400"></i>
-        </div>
+        <span class="font-bold  mx-5 ">{{photo.title}}</span> 
+        <span class="mt-5 ml-10"><i v-show="photo.done" class="im im-heart text-red-400"></i></span>
       </li>
+      <li>{{checkItems}}</li>
     </ul>
   </div>
 
