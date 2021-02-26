@@ -1,4 +1,4 @@
-const app = {
+const app = Vue.createApp({
     data() {
         return {
             photos: [{url:'images/g1.jpg', title: 'Geysers valley, Russia',done: false  ,imgShow:true },
@@ -32,10 +32,10 @@ const app = {
             }
             
         },
-        searchImg(){
-            if (this.inputTask) {
+        searchImg(inputTask){
+            if (inputTask) {
                 for (let i = 0; i < this.photos.length; i++) {
-                    if (this.photos[i].title.toLowerCase().includes(this.inputTask.toLowerCase())) {
+                    if (this.photos[i].title.toLowerCase().includes(inputTask.toLowerCase())) {
                         this.photos[i].imgShow = true;
                     }
                     else {
@@ -48,6 +48,9 @@ const app = {
             this.canvasUrl = this.photos[index].url;
             this.canvasShow = true;
             this.photos[index].done = !this.photos[index].done;
+        },
+        canvasDrop(){
+            this.canvasShow = false;
         }
     }
     ,
@@ -65,5 +68,4 @@ const app = {
         
     }
 
-}
-Vue.createApp(app).mount('#app')
+})
